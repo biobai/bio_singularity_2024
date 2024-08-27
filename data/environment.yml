@@ -1,0 +1,14 @@
+name: bio_singularity_2024
+channels:
+  - bioconda
+dependencies:
+  - fastqc
+  - fastp
+  - star
+  - featurecounts
+  - bsmap
+  - samtools
+  - bseqc2
+  - picard
+  - moabs
+  - sambamba
