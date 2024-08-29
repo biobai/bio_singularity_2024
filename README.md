@@ -3,10 +3,6 @@
 ## Introduction
 This repository provides a step-by-step guide for creating Singularity containers tailored for bioinformatics workflows, utilizing popular tools like bioconda, FastQC, Fastp, STAR, etc.
 
-
-## Getting Started
-
-
 ## Building the Singularity Container
 ```Shell
 podman build -t local/test:4.4.0 . -f dockerfiles/test.Dockerfile
@@ -20,4 +16,10 @@ scp test_4.4.0.sif ${server}:/~
 in server:
 ```Shell
 singularity shell -B /PUBLIC:/PUBLIC test_4.4.0.sif
+```
+you can replace the `/PUBLIC` as the directory host your data
+in singularity:
+```Shell
+source activate /opt/conda/envs/bio_singularity_2024
+fastqc -h
 ```
