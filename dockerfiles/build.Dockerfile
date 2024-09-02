@@ -24,7 +24,7 @@ ENV PATH=${CONDA_DIR}/bin:${PREFIX}/bin:${PATH}
 # 6. Activate base by default when running as root as well
 #    The root user is already created, so won't pick up changes to /etc/skel
 RUN apt-get update > /dev/null && \
-    apt-get install --no-install-recommends --yes \
+    apt-get install --yes \
         wget bzip2 ca-certificates \
         git \
         tini \
@@ -49,7 +49,7 @@ RUN mamba env create -f /opt/data/environment.yml && \
 
 RUN cd /opt/ && \
     wget --no-hsts --quiet -c https://github.com/sunnyisgalaxy/moabs/archive/refs/tags/v${MOABS_VERSION}.tar.gz && \
-    tar zxvf v${MOABS_VERSION}.tar.gz && \
+    tar zxf v${MOABS_VERSION}.tar.gz && \
     rm -rf v${MOABS_VERSION}.tar.gz && \
     cd moabs-${MOABS_VERSION} && \
     bash /opt/data/moabs.build.sh && \
