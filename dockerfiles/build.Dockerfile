@@ -24,11 +24,13 @@ ENV PATH=${CONDA_DIR}/bin:${PREFIX}/bin:${PATH}
 # 6. Activate base by default when running as root as well
 #    The root user is already created, so won't pick up changes to /etc/skel
 RUN apt-get update > /dev/null && \
-    apt-get install --yes \
-        wget bzip2 ca-certificates \
-        git \
+    apt-get install make gcc g++ autoconf automake --yes --no-install-recommends \
+        wget bzip2 ca-certificates fastqc \
+        git vim \
         tini \
         libboost-all-dev libboost-program-options-dev libboost-thread-dev libboost-regex-dev \
+        libncurses5-dev libncursesw5-dev \
+        openjdk-11-jre fontconfig \
         > /dev/null && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
@@ -37,9 +39,11 @@ RUN apt-get update > /dev/null && \
     rm /tmp/miniforge.sh
 
 COPY data /opt/data
-
+RUN mv /opt/data/.condarc ~/ && \
+    conda clean -i -y
 
 RUN mamba env create -f /opt/data/environment.yml && \
+    mamba install -n bio_singularity_2024 openjdk=22.0.1 -y && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate bio_singularity_2024" >> ~/.bashrc && \
@@ -54,8 +58,9 @@ RUN cd /opt/ && \
     cd moabs-${MOABS_VERSION} && \
     bash /opt/data/moabs.build.sh && \
     mv /opt/data/lut_pdiffCI.dat ${PREFIX}/bin/ && \
-    mv /opt/data/lut_pdiffInRegion.dat ${PREFIX}/bin/
-    
+    mv /opt/data/lut_pdiffInRegion.dat ${PREFIX}/bin/ && \
+    chmod 755 ${PREFIX}/bin/lut_pdi*
+
 RUN rm -rf /opt/{data, moabs-${MOABS_VERSION}}
 ENTRYPOINT ["tini", "--"]
 CMD [ "/bin/bash" ]

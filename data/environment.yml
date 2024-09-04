@@ -1,9 +1,9 @@
 name: bio_singularity_2024
 channels:
+  - default
   - bioconda
   - conda-forge
 dependencies:
-  - fastqc
   - fastp
   - star
   - Subread
@@ -12,3 +12,8 @@ dependencies:
   - picard
 #  - moabs
   - sambamba
+  - r-base
+  - r-ggplot2
+  - r-gridextra
+  - perl
+  - perl-config-simple
